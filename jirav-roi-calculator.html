@@ -83,7 +83,7 @@ body{
 .step-title{
   font-size:.65rem;font-weight:700;
   letter-spacing:.14em;text-transform:uppercase;
-  color:var(--light);
+  color:var(--ink);
 }
 
 /* CARD */
@@ -106,7 +106,7 @@ body{
   display:block;
   font-size:.63rem;font-weight:700;
   letter-spacing:.11em;text-transform:uppercase;
-  color:var(--mid);margin-bottom:.5rem;
+  color:var(--ink);margin-bottom:.5rem;
 }
 .field label span{
   display:block;font-weight:400;
@@ -149,7 +149,7 @@ input[type=number]:focus{
 }
 .slider-lbl{
   font-size:.63rem;font-weight:700;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--mid);
+  letter-spacing:.11em;text-transform:uppercase;color:var(--ink);
 }
 .slider-lbl span{
   display:block;font-weight:400;font-size:.72rem;
@@ -220,7 +220,7 @@ input[type=range]::-moz-range-thumb{
   letter-spacing:.14em;text-transform:uppercase;
   color:var(--light);margin-bottom:.5rem;
 }
-.result-tile.dark .tile-label{color:#555}
+.result-tile.dark .tile-label{color:#FFFFFF}
 .tile-num{
   font-family:'Bebas Neue',sans-serif;
   font-size:clamp(2rem,5vw,2.8rem);
@@ -231,7 +231,7 @@ input[type=range]::-moz-range-thumb{
   font-size:.75rem;color:var(--light);
   margin-top:.3rem;line-height:1.4;
 }
-.result-tile.dark .tile-sub{color:#444}
+.result-tile.dark .tile-sub{color:#CCCCCC}
 
 /* COMPARE TABLE */
 .compare{
@@ -436,8 +436,8 @@ input[type=range]::-moz-range-thumb{
 
   <div class="results-grid">
     <div class="result-tile dark">
-      <div class="tile-label">Annual revenue you could add</div>
-      <div class="tile-num" id="rev-gap">—</div>
+      <div class="tile-label" style="font-size:.72rem;letter-spacing:.16em;margin-bottom:.6rem">Annual revenue you could add</div>
+      <div class="tile-num" style="font-size:clamp(2.6rem,6vw,3.6rem)" id="rev-gap">—</div>
       <div class="tile-sub" id="gap-sub">—</div>
     </div>
     <div class="result-tile light">
