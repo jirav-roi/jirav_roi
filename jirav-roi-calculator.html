@@ -4,273 +4,599 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Advisory ROI Calculator — Jirav APAC</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --black:#111111;
-  --orange:#F5821F;
-  --orange2:#E06A08;
-  --white:#FFFFFF;
-  --bg:#F7F7F5;
-  --ink:#1A1A18;
-  --inkm:#4A4A45;
-  --inkl:#888880;
-  --rule:#DDDDD8;
-  --green:#0D7A5F;
-  --green-bg:#EAF5F0;
+  --orange:#F47B20;
+  --orange-dim:#7A3D10;
+  --green:#1E8C52;
+  --green-bg:#E6F5EE;
   --red:#C0392B;
   --red-bg:#FDF0EE;
-  --sans:'Roboto',system-ui,sans-serif;
+  --black:#0F0F0E;
+  --ink:#1C1C1A;
+  --mid:#5A5A55;
+  --light:#9A9A92;
+  --rule:#E4E2DA;
+  --bg:#F5F4F0;
+  --white:#FFFFFF;
+  --card-shadow:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.05);
 }
-body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100vh;padding:1.5rem}
-
-.frame{max-width:760px;margin:0 auto;border:3px solid var(--black);border-radius:16px;overflow:hidden;background:var(--white)}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+}
 
 /* HERO */
-.hero{background:var(--black);color:var(--white);padding:2rem 1.5rem 1.75rem;text-align:center}
-.eyebrow{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:.6rem}
-.hero h1{font-size:clamp(1.5rem,4vw,2rem);font-weight:700;line-height:1.2;margin-bottom:.5rem}
-.hero h1 span{color:var(--orange)}
-.hero p{font-size:.88rem;color:#999;max-width:380px;margin:0 auto;line-height:1.5}
+.hero{
+  background:var(--black);
+  padding:3rem 2rem 2.6rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 80% 20%, rgba(244,123,32,.12) 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:1.1rem;
+}
+.hero h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.6rem,7vw,4.4rem);
+  letter-spacing:.04em;
+  color:var(--white);
+  line-height:.95;
+  margin-bottom:.5rem;
+}
+.hero h1 em{
+  font-style:normal;
+  color:var(--orange);
+}
+.hero-sub{
+  font-size:.9rem;font-weight:300;
+  color:#888;margin-top:.8rem;
+}
 
-/* MAIN */
-.main{padding:1.5rem;display:flex;flex-direction:column;gap:1.1rem;background:var(--white)}
+/* LAYOUT */
+.wrap{max-width:820px;margin:0 auto;padding:2.2rem 1.5rem 4rem}
 
-/* CARDS */
-.card{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:1.25rem}
-.card-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inkl);margin-bottom:1.1rem}
+/* STEP HEADER */
+.step-head{
+  display:flex;align-items:center;gap:.7rem;
+  margin-bottom:1.2rem;
+}
+.step-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--orange);color:var(--white);
+  font-size:.72rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.step-title{
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--light);
+}
 
-/* INPUTS */
-.inputs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem}
-.field{display:flex;flex-direction:column;gap:.35rem}
-.field label{font-size:.68rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--inkl)}
-.pw{position:relative}
-.pw span{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.88rem;font-weight:500;color:var(--inkm);pointer-events:none}
-input[type=number]{width:100%;padding:.55rem .85rem .55rem 1.9rem;font-family:var(--sans);font-size:.95rem;font-weight:500;color:var(--ink);background:var(--white);border:1.5px solid var(--rule);border-radius:8px;outline:none;transition:border-color .15s;-moz-appearance:textfield}
-input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
-input[type=number]:focus{border-color:var(--orange)}
-.no-pre input[type=number]{padding-left:.85rem}
-.slider-wrap{display:flex;flex-direction:column;gap:.35rem}
-.slider-wrap label{font-size:.68rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--inkl)}
-.srow{display:flex;align-items:center;gap:10px}
-.srow input[type=range]{flex:1;height:4px;-webkit-appearance:none;appearance:none;background:var(--rule);border-radius:2px;outline:none;cursor:pointer}
-.srow input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--orange);border:2px solid var(--white);box-shadow:0 0 0 1.5px var(--orange);cursor:pointer}
-.sval{font-size:.9rem;font-weight:700;color:var(--ink);min-width:28px;text-align:right}
+/* CARD */
+.card{
+  background:var(--white);
+  border-radius:14px;
+  border:1px solid var(--rule);
+  box-shadow:var(--card-shadow);
+  padding:1.8rem;
+  margin-bottom:1.4rem;
+}
 
-/* BIG NUMBERS */
-.big-row{display:grid;grid-template-columns:1fr 1fr;border-radius:10px;overflow:hidden;border:1.5px solid var(--black)}
-.big-block{background:var(--white);padding:1.25rem;text-align:center}
-.big-block+.big-block{border-left:1.5px solid var(--black)}
-.big-eyebrow{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inkl);margin-bottom:.35rem}
-.big-num{font-size:clamp(1.6rem,5vw,2.2rem);font-weight:700;line-height:1;transition:all .3s}
-.big-num.red{color:var(--red)}
-.big-num.green{color:var(--green)}
-.big-sub{font-size:.7rem;color:var(--inkl);margin-top:.3rem}
+/* INPUT GRID */
+.inputs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:1.1rem;
+}
+.field label{
+  display:block;
+  font-size:.63rem;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:.5rem;
+}
+.field label span{
+  display:block;font-weight:400;
+  font-size:.72rem;letter-spacing:0;
+  text-transform:none;color:var(--light);
+  margin-top:.15rem;
+}
+.input-wrap{position:relative}
+.pfx{
+  position:absolute;left:.75rem;top:50%;
+  transform:translateY(-50%);
+  font-size:.9rem;font-weight:500;color:var(--mid);
+  pointer-events:none;
+}
+input[type=number]{
+  width:100%;
+  padding:.6rem .75rem .6rem 1.75rem;
+  font-family:'DM Sans',sans-serif;
+  font-size:1rem;font-weight:500;
+  border:1.5px solid var(--rule);
+  border-radius:9px;
+  background:var(--bg);color:var(--ink);
+  outline:none;
+  transition:border-color .15s,box-shadow .15s;
+  -moz-appearance:textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+input[type=number]:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(244,123,32,.12);
+}
+.no-pfx input[type=number]{padding-left:.75rem}
 
-/* VS STRIP */
-.vs{display:grid;grid-template-columns:1fr auto 1fr;border-radius:10px;overflow:hidden;border:1.5px solid var(--rule)}
-.vs-left{background:var(--red-bg);padding:1.1rem 1.25rem;border-right:1px solid var(--rule)}
-.vs-right{background:var(--green-bg);padding:1.1rem 1.25rem;text-align:right}
-.vs-mid{background:var(--white);display:flex;align-items:center;padding:0 .75rem;font-size:.65rem;font-weight:700;color:var(--inkl);letter-spacing:.06em}
-.vs-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--inkl);margin-bottom:.25rem}
-.vs-val{font-size:1.45rem;font-weight:700;transition:all .3s}
-.vs-val.red{color:var(--red)}
-.vs-val.green{color:var(--green)}
-.vs-sub{font-size:.7rem;color:var(--inkm);margin-top:.2rem}
+/* SLIDER */
+.slider-wrap{margin-top:1.3rem}
+.slider-top{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:.5rem;
+}
+.slider-lbl{
+  font-size:.63rem;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--mid);
+}
+.slider-lbl span{
+  display:block;font-weight:400;font-size:.72rem;
+  letter-spacing:0;text-transform:none;color:var(--light);margin-top:.15rem;
+}
+.slider-num{
+  font-size:1.5rem;font-weight:700;
+  color:var(--orange);line-height:1;
+}
+input[type=range]{
+  width:100%;-webkit-appearance:none;
+  height:5px;border-radius:3px;
+  background:linear-gradient(to right,var(--orange) 0%,var(--orange) var(--pct,27%),var(--rule) var(--pct,27%));
+  outline:none;cursor:pointer;margin-top:.2rem;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--orange);border:3px solid var(--white);
+  box-shadow:0 1px 5px rgba(0,0,0,.25);cursor:pointer;
+}
+input[type=range]::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--orange);border:3px solid var(--white);
+  box-shadow:0 1px 5px rgba(0,0,0,.25);cursor:pointer;
+}
+
+/* DIVIDER */
+.divider{
+  border:none;border-top:1px solid var(--rule);
+  margin:1.6rem 0;
+}
+
+/* WHAT JIRAV DOES BOX */
+.jirav-assumption{
+  background:var(--bg);
+  border-radius:10px;
+  border:1px solid var(--rule);
+  padding:1.1rem 1.2rem;
+  font-size:.82rem;color:var(--mid);line-height:1.6;
+}
+.jirav-assumption strong{color:var(--ink)}
+.jirav-assumption .src{
+  font-size:.7rem;color:var(--light);margin-top:.6rem;
+}
+.jirav-assumption .src a{color:var(--orange);text-decoration:none}
+
+/* RESULTS */
+.results-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+  margin-bottom:1.4rem;
+}
+@media(max-width:500px){.results-grid{grid-template-columns:1fr}}
+
+.result-tile{
+  border-radius:12px;
+  padding:1.4rem 1.3rem;
+  border:1px solid var(--rule);
+}
+.result-tile.dark{
+  background:var(--black);border-color:var(--black);
+}
+.result-tile.light{background:var(--white)}
+.tile-label{
+  font-size:.6rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--light);margin-bottom:.5rem;
+}
+.result-tile.dark .tile-label{color:#555}
+.tile-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2rem,5vw,2.8rem);
+  letter-spacing:.03em;line-height:1;
+  color:var(--orange);
+}
+.tile-sub{
+  font-size:.75rem;color:var(--light);
+  margin-top:.3rem;line-height:1.4;
+}
+.result-tile.dark .tile-sub{color:#444}
+
+/* COMPARE TABLE */
+.compare{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:.8rem;align-items:center;
+  margin-bottom:1rem;
+}
+.cmp{
+  border-radius:10px;padding:1.1rem 1rem;
+}
+.cmp.xl{background:var(--red-bg);border:1px solid #F0C8C3}
+.cmp.jv{background:var(--green-bg);border:1px solid #B8DFCA}
+.cmp-lbl{
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;
+  margin-bottom:.3rem;
+}
+.cmp.xl .cmp-lbl{color:var(--red)}
+.cmp.jv .cmp-lbl{color:var(--green)}
+.cmp-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.9rem;letter-spacing:.03em;line-height:1;
+}
+.cmp.xl .cmp-num{color:var(--red)}
+.cmp.jv .cmp-num{color:var(--green)}
+.cmp-sub{font-size:.7rem;color:var(--light);margin-top:.2rem}
+.vs{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--ink);color:var(--white);
+  font-size:.65rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
 
 /* BARS */
-.brow{display:flex;align-items:center;gap:10px;margin-bottom:.5rem}
-.bname{font-size:.78rem;color:var(--inkm);min-width:105px}
-.btrack{flex:1;background:var(--rule);border-radius:3px;height:8px;overflow:hidden}
-.bfill{height:8px;border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.bfill.red{background:var(--red)}
-.bfill.green{background:var(--green)}
-.bfill.orange{background:var(--orange)}
-.bval{font-size:.78rem;font-weight:700;min-width:58px;text-align:right}
-.bval.red{color:var(--red)}
-.bval.green{color:var(--green)}
-.bar-note{font-size:.7rem;color:var(--inkl);margin-top:.4rem}
+.bar-section{margin-top:1.2rem}
+.bar-row{margin-bottom:.9rem}
+.bar-meta{
+  display:flex;justify-content:space-between;
+  font-size:.74rem;margin-bottom:.35rem;
+}
+.bar-name{font-weight:500;color:var(--mid)}
+.bar-val{font-weight:700;color:var(--ink)}
+.bar-track{height:9px;background:#EDECEA;border-radius:5px;overflow:hidden}
+.bar-fill{height:100%;border-radius:5px;transition:width .45s cubic-bezier(.4,0,.2,1)}
+.bar-fill.xl{background:var(--red);width:100%}
+.bar-fill.jv{background:var(--orange)}
+.bar-fill.fr{background:var(--green)}
+.bar-note{
+  font-size:.72rem;color:var(--light);
+  font-style:italic;margin-top:.5rem;
+}
 
-/* PILLS */
-.pills{display:flex;flex-direction:column;gap:.6rem}
-.pill-row{display:flex;gap:10px;align-items:flex-start}
-.pill-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;flex-shrink:0;margin-top:1px;font-weight:700}
-.icon-r{background:var(--red-bg);color:var(--red)}
-.icon-g{background:var(--green-bg);color:var(--green)}
-.pill-text{font-size:.82rem;color:var(--inkm);line-height:1.55}
-.pill-text strong{color:var(--ink);font-weight:500}
+/* PROOF */
+.proof-strip{
+  display:flex;flex-wrap:wrap;gap:.55rem;
+  margin-top:1.2rem;
+}
+.proof-chip{
+  background:var(--bg);border:1px solid var(--rule);
+  border-radius:20px;padding:.3rem .8rem;
+  font-size:.69rem;color:var(--mid);line-height:1.45;
+}
+.proof-chip strong{color:var(--ink)}
+
+/* HOW CALCULATED */
+.calc-explainer{
+  font-size:.8rem;color:var(--mid);
+  line-height:1.7;
+  background:var(--bg);
+  border-radius:10px;
+  padding:1.1rem 1.2rem;
+  border:1px solid var(--rule);
+}
+.calc-explainer strong{color:var(--ink)}
+
+/* SOURCES */
+.sources{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--rule)}
+.src-head{
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;
+  color:var(--light);margin-bottom:.6rem;
+}
+.sources ol{padding-left:1.1rem}
+.sources li{
+  font-size:.7rem;color:var(--light);
+  line-height:1.5;margin-bottom:.35rem;
+}
+.sources li a{color:var(--orange);text-decoration:none}
+.sources li a:hover{text-decoration:underline}
 
 /* CTA */
-.cta{background:var(--orange);padding:1.5rem;text-align:center}
-.cta q{font-size:clamp(.9rem,2.5vw,1.1rem);font-weight:700;line-height:1.4;display:block;margin-bottom:.4rem;color:var(--white);quotes:none}
-.cta p{font-size:.8rem;color:rgba(255,255,255,.8);margin-bottom:1.1rem}
-.cta a{display:inline-block;background:var(--black);color:var(--white);font-size:.85rem;font-weight:700;padding:.65rem 1.75rem;border-radius:8px;text-decoration:none;transition:opacity .15s;letter-spacing:.02em}
-.cta a:hover{opacity:.82}
-
-.powered{text-align:center;font-size:.68rem;color:var(--inkl);padding:1rem;background:var(--white);border-top:1px solid var(--rule)}
-.powered a{color:var(--orange);text-decoration:none}
-
-@media(max-width:520px){
-  body{padding:.75rem}
-  .big-row,.vs{grid-template-columns:1fr}
-  .big-block+.big-block{border-left:none;border-top:1.5px solid var(--black)}
-  .vs-mid{padding:.3rem 1rem;justify-content:center}
-  .bname{min-width:88px;font-size:.72rem}
+.cta{
+  background:var(--orange);
+  border-radius:14px;
+  padding:2rem;text-align:center;
+  margin-bottom:1.4rem;
 }
+.cta h3{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;letter-spacing:.05em;
+  color:var(--white);margin-bottom:.35rem;
+}
+.cta p{font-size:.85rem;color:rgba(255,255,255,.75);margin-bottom:1.1rem}
+.cta-btn{
+  display:inline-block;
+  background:var(--white);color:var(--orange-dim);
+  font-family:'DM Sans',sans-serif;
+  font-size:.85rem;font-weight:700;
+  padding:.65rem 1.8rem;border-radius:7px;
+  text-decoration:none;letter-spacing:.02em;
+  transition:opacity .15s;
+}
+.cta-btn:hover{opacity:.88}
+
+.footer{
+  text-align:center;font-size:.7rem;color:var(--light);
+  line-height:1.6;padding-bottom:1rem;
+}
+.footer a{color:var(--orange);text-decoration:none}
 </style>
 </head>
 <body>
 
-<div class="frame">
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Jirav APAC — Advisory ROI Calculator</div>
+  <h1>What is Excel <em>really costing</em> your firm?</h1>
+  <p class="hero-sub">Enter what you know today. We calculate the gap.</p>
+</div>
 
-  <div class="hero">
-    <div class="eyebrow">Advisory ROI Calculator</div>
-    <h1>What is Excel <span>really</span><br>costing your firm?</h1>
-    <p>Enter your numbers. See the gap.</p>
+<div class="wrap">
+
+  <!-- STEP 1 -->
+  <div class="step-head">
+    <div class="step-num">1</div>
+    <div class="step-title">Tell us about your firm today</div>
+  </div>
+  <div class="card">
+    <div class="inputs-grid">
+
+      <div class="field">
+        <label>Monthly retainer (AU$)
+          <span>What you charge per FP&A client</span>
+        </label>
+        <div class="input-wrap">
+          <span class="pfx">$</span>
+          <input type="number" id="retainer" value="3000" min="500" max="25000" step="500" oninput="calc()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>FP&A clients on retainer
+          <span>Your current paying clients</span>
+        </label>
+        <div class="input-wrap no-pfx">
+          <input type="number" id="clients" value="10" min="1" max="500" oninput="calc()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Advisors doing FP&A
+          <span>Not firm headcount — FP&A staff only</span>
+        </label>
+        <div class="input-wrap no-pfx">
+          <input type="number" id="advisors" value="1" min="1" max="100" oninput="calc()">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-top">
+        <div class="slider-lbl">Excel hours per client per month
+          <span>Time on model build, updates &amp; reporting — per client</span>
+        </div>
+        <div class="slider-num" id="eh-val">12</div>
+      </div>
+      <input type="range" id="ehrs" min="4" max="40" value="12"
+        oninput="document.getElementById('eh-val').textContent=this.value;updateSlider(this);calc()">
+    </div>
   </div>
 
-  <div class="main">
-
-    <div class="card">
-      <div class="card-title">Your numbers</div>
-      <div class="inputs-grid">
-        <div class="field">
-          <label>Monthly retainer (AU$)</label>
-          <div class="pw"><span>$</span><input type="number" id="retainer" value="3000" min="500" max="20000" step="500" oninput="calc()"></div>
-        </div>
-        <div class="field no-pre">
-          <label>Advisory clients today</label>
-          <div class="pw"><input type="number" id="clients" value="15" min="1" max="200" oninput="calc()"></div>
-        </div>
-        <div class="field no-pre">
-          <label>Advisors doing FP&amp;A</label>
-          <div class="pw"><input type="number" id="advisors" value="1" min="1" max="20" oninput="calc()"></div>
-        </div>
-        <div class="slider-wrap">
-          <label>Excel hrs per forecast</label>
-          <div class="srow">
-            <input type="range" id="ehrs" min="6" max="24" value="15" step="1" oninput="calc();document.getElementById('sv').textContent=this.value">
-            <span class="sval" id="sv">15</span>
-          </div>
-        </div>
-      </div>
+  <!-- STEP 2 -->
+  <div class="step-head">
+    <div class="step-num">2</div>
+    <div class="step-title">What Jirav does — our stated assumption</div>
+  </div>
+  <div class="card">
+    <div class="jirav-assumption">
+      <strong>Jirav reduces forecast time by 80% per client.</strong> We use 80% as a conservative benchmark — Oliver Wyman research documents up to 93% reduction in comparable FP&A software deployments, and Jirav's own case studies consistently show advisors moving from hours to minutes on routine model updates.<br><br>
+      That freed time translates directly into additional client capacity — with no new hires. The revenue opportunity below is what your current team could earn if that capacity were filled at your retainer rate.
+      <div class="src">Sources: <a href="https://www.abacum.ai/blog/best-fpa-software-tools" target="_blank">Oliver Wyman via Abacum</a> · <a href="https://www.jirav.com/customer-case-study/compass-east" target="_blank">Compass East case study</a> · <a href="https://www.jirav.com/customer-case-study/founders-cpa-scales-strategic-advisory-services" target="_blank">Founder's CPA case study</a></div>
     </div>
-
-    <div class="big-row">
-      <div class="big-block">
-        <div class="big-eyebrow">Left on the table — annually</div>
-        <div class="big-num red" id="rev-gap">AU$1.08M</div>
-        <div class="big-sub">same advisor, no new hire</div>
-      </div>
-      <div class="big-block">
-        <div class="big-eyebrow">Hours freed — monthly</div>
-        <div class="big-num green" id="hrs-freed">187 hrs</div>
-        <div class="big-sub">recovered from Excel mechanics</div>
-      </div>
-    </div>
-
-    <div class="vs">
-      <div class="vs-left">
-        <div class="vs-label">Excel today</div>
-        <div class="vs-val red" id="xl-rev">AU$540K</div>
-        <div class="vs-sub" id="xl-sub">15 clients · 225 hrs/month</div>
-      </div>
-      <div class="vs-mid">VS</div>
-      <div class="vs-right">
-        <div class="vs-label">With Jirav</div>
-        <div class="vs-val green" id="jv-rev">AU$1.62M</div>
-        <div class="vs-sub" id="jv-sub">45 clients · 38 hrs/month</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Monthly forecast hours</div>
-      <div class="brow">
-        <div class="bname">Excel</div>
-        <div class="btrack"><div class="bfill red" id="bar-xl" style="width:100%"></div></div>
-        <div class="bval red" id="bv-xl">225 hrs</div>
-      </div>
-      <div class="brow">
-        <div class="bname">Jirav</div>
-        <div class="btrack"><div class="bfill green" id="bar-jv" style="width:17%"></div></div>
-        <div class="bval green" id="bv-jv">38 hrs</div>
-      </div>
-      <div class="brow">
-        <div class="bname" style="font-weight:700;color:var(--ink)">Recovered</div>
-        <div class="btrack"><div class="bfill orange" id="bar-fr" style="width:83%"></div></div>
-        <div class="bval" style="color:var(--orange)" id="bv-fr">187 hrs</div>
-      </div>
-      <div class="bar-note" id="bar-note">187 hrs = 23+ billable days freed every month</div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">What Excel is silently costing you</div>
-      <div class="pills">
-        <div class="pill-row">
-          <div class="pill-icon icon-r">$</div>
-          <div class="pill-text"><strong id="p-rev">AU$1.08M unrealised revenue</strong> — annual gap between your current ceiling and what Jirav unlocks from the same headcount</div>
-        </div>
-        <div class="pill-row">
-          <div class="pill-icon icon-r">⏱</div>
-          <div class="pill-text"><strong id="p-hrs">1,380 hrs/year</strong> on spreadsheet mechanics — <strong id="p-months">7.5 months</strong> of billable capacity burned on admin</div>
-        </div>
-        <div class="pill-row">
-          <div class="pill-icon icon-r">⚠</div>
-          <div class="pill-text"><strong>Key person risk baked in</strong> — advisory stalls the moment the Excel owner is sick, overloaded, or resigns</div>
-        </div>
-        <div class="pill-row">
-          <div class="pill-icon icon-g">✓</div>
-          <div class="pill-text"><strong id="p-clients">30 additional clients</strong> within reach — same headcount, standardised models, any team member runs the forecast</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="cta">
-      <q>If your lead advisor stopped building Excel models tomorrow — how many more retainers could you carry?</q>
-      <p>That's the revenue conversation. Jirav is just the unlock.</p>
-      <a href="https://meetings-ap1.hubspot.com/rees-rees" target="_blank">Book a 15-minute conversation →</a>
-    </div>
-
   </div>
 
-  <div class="powered">Powered by <a href="https://jirav.com.au" target="_blank">Jirav APAC</a></div>
+  <!-- STEP 3 -->
+  <div class="step-head">
+    <div class="step-num">3</div>
+    <div class="step-title">Your numbers</div>
+  </div>
+
+  <div class="results-grid">
+    <div class="result-tile dark">
+      <div class="tile-label">Annual revenue you could add</div>
+      <div class="tile-num" id="rev-gap">—</div>
+      <div class="tile-sub" id="gap-sub">—</div>
+    </div>
+    <div class="result-tile light">
+      <div class="tile-label">Hours freed per advisor per month</div>
+      <div class="tile-num" id="hrs-freed">—</div>
+      <div class="tile-sub" id="hrs-sub">—</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step-title" style="margin-bottom:1.1rem">Revenue — Excel today vs. with Jirav (annual)</div>
+    <div class="compare">
+      <div class="cmp xl">
+        <div class="cmp-lbl">Excel today</div>
+        <div class="cmp-num" id="xl-rev">—</div>
+        <div class="cmp-sub" id="xl-sub">—</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="cmp jv">
+        <div class="cmp-lbl">With Jirav</div>
+        <div class="cmp-num" id="jv-rev">—</div>
+        <div class="cmp-sub" id="jv-sub">—</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-title" style="margin-bottom:.9rem">Hours per advisor per month</div>
+    <div class="bar-section">
+      <div class="bar-row">
+        <div class="bar-meta"><span class="bar-name">Excel — today</span><span class="bar-val" id="bv-xl">—</span></div>
+        <div class="bar-track"><div class="bar-fill xl" id="bar-xl"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span class="bar-name">Jirav — same clients, less time</span><span class="bar-val" id="bv-jv">—</span></div>
+        <div class="bar-track"><div class="bar-fill jv" id="bar-jv"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span class="bar-name">Hours freed for new clients</span><span class="bar-val" id="bv-fr">—</span></div>
+        <div class="bar-track"><div class="bar-fill fr" id="bar-fr"></div></div>
+      </div>
+      <div class="bar-note" id="bar-note">—</div>
+    </div>
+
+    <div class="proof-strip">
+      <div class="proof-chip"><strong>Oliver Wyman:</strong> 45-day budget cycle → 3 days with FP&A software</div>
+      <div class="proof-chip"><strong>Compass East (Jirav):</strong> 30 min/day model update → instant, any advisor</div>
+      <div class="proof-chip"><strong>Founder's CPA (Jirav):</strong> "One person can do more. Advisory is now scalable."</div>
+    </div>
+  </div>
+
+  <!-- HOW CALCULATED -->
+  <div class="card">
+    <div class="step-title" style="margin-bottom:.9rem">How these numbers are calculated</div>
+    <div class="calc-explainer" id="calc-explainer">—</div>
+    <div class="sources">
+      <div class="src-head">Sources</div>
+      <ol>
+        <li>Oliver Wyman (cited in Abacum FP&A Software Guide, 2025) — FP&A technology reduced budget finalisation from 45 days to 3 days in documented cases. <a href="https://www.abacum.ai/blog/best-fpa-software-tools" target="_blank">abacum.ai →</a></li>
+        <li>Jirav / Compass East case study — complex client model requiring 30 min of daily updates by one specialist replaced by instant, multi-user access. <a href="https://www.jirav.com/customer-case-study/compass-east" target="_blank">jirav.com →</a></li>
+        <li>Jirav / Founder's CPA case study — "We are definitely saving time. It makes advisory scalable — one person can do more." <a href="https://www.jirav.com/customer-case-study/founders-cpa-scales-strategic-advisory-services" target="_blank">jirav.com →</a></li>
+        <li>Jirav / Summit Virtual CFO case study — 150 clients, 55 staff, 94% retention, ~30 new clients added annually using live Jirav modelling. <a href="https://www.jirav.com/customer-case-study/summit-cpa-builds-advisory-led-client-relationships-with-jirav" target="_blank">jirav.com →</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h3>Ready to close the gap?</h3>
+    <p>15 minutes. No slides. See exactly how Jirav fits your firm.</p>
+    <a class="cta-btn" href="https://meetings-ap1.hubspot.com/rees-rees" target="_blank">Book a conversation →</a>
+  </div>
+
+  <div class="footer">
+    Estimates based on published case studies and industry research. Actual results vary by firm, service model and implementation.<br>
+    <a href="https://jirav.com.au" target="_blank">Jirav APAC</a> · Exclusive APAC distributor for <a href="https://jirav.com" target="_blank">Jirav</a>
+  </div>
 
 </div>
 
 <script>
+function updateSlider(el){
+  const min=+el.min,max=+el.max,val=+el.value;
+  el.style.setProperty('--pct',((val-min)/(max-min)*100).toFixed(1)+'%');
+}
+updateSlider(document.getElementById('ehrs'));
+
 function fmt(n){
-  if(n>=1000000)return'AU$'+(n/1000000).toFixed(2).replace(/\.?0+$/,'')+'M';
-  if(n>=1000)return'AU$'+Math.round(n/1000)+'K';
-  return'AU$'+Math.round(n);
+  if(n>=1000000) return 'AU$'+(n/1000000).toFixed(2).replace(/\.?0+$/,'')+'M';
+  if(n>=1000)    return 'AU$'+Math.round(n/1000)+'K';
+  return 'AU$'+Math.round(n);
 }
+function fmtHrs(n){ return Math.round(n)+' hrs' }
+
 function calc(){
-  const r=Math.max(500,parseInt(document.getElementById('retainer').value)||3000);
-  const c=Math.max(1,parseInt(document.getElementById('clients').value)||15);
-  const a=Math.max(1,parseInt(document.getElementById('advisors').value)||1);
-  const eh=Math.max(6,parseInt(document.getElementById('ehrs').value)||15);
-  const jh=Math.max(1,Math.round(eh/5.5));
-  const xlC=c*a,jvC=xlC*3;
-  const xlRev=xlC*r*12,jvRev=jvC*r*12,gap=jvRev-xlRev;
-  const xlH=eh*xlC,jvH=jh*xlC,freed=xlH-jvH;
-  const freedYr=freed*12,days=Math.round(freed/8),months=(freedYr/160).toFixed(1);
-  document.getElementById('rev-gap').textContent=fmt(gap);
-  document.getElementById('hrs-freed').textContent=Math.round(freed)+' hrs';
-  document.getElementById('xl-rev').textContent=fmt(xlRev);
-  document.getElementById('xl-sub').textContent=xlC+' clients · '+Math.round(xlH)+' hrs/month';
-  document.getElementById('jv-rev').textContent=fmt(jvRev);
-  document.getElementById('jv-sub').textContent=jvC+' clients · '+Math.round(jvH)+' hrs/month';
-  document.getElementById('bar-jv').style.width=Math.round((jvH/xlH)*100)+'%';
-  document.getElementById('bar-fr').style.width=Math.round((freed/xlH)*100)+'%';
-  document.getElementById('bv-xl').textContent=Math.round(xlH)+' hrs';
-  document.getElementById('bv-jv').textContent=Math.round(jvH)+' hrs';
-  document.getElementById('bv-fr').textContent=Math.round(freed)+' hrs';
-  document.getElementById('bar-note').textContent=Math.round(freed)+' hrs = '+days+'+ billable days freed every month';
-  document.getElementById('p-rev').textContent=fmt(gap)+' unrealised revenue';
-  document.getElementById('p-hrs').textContent=Math.round(freedYr).toLocaleString()+' hrs/year';
-  document.getElementById('p-months').textContent=months+' months';
-  document.getElementById('p-clients').textContent=(jvC-xlC)+' additional clients';
+  const r  = Math.max(500, +document.getElementById('retainer').value || 3000);
+  const c  = Math.max(1,   +document.getElementById('clients').value  || 10);
+  const a  = Math.max(1,   +document.getElementById('advisors').value || 1);
+  const eh = Math.max(4,   +document.getElementById('ehrs').value     || 12);
+
+  // 80% reduction — conservative vs Oliver Wyman's 93%
+  const jh = Math.max(1, Math.round(eh * 0.20));
+
+  // Per-advisor figures
+  const cliPerAdv    = c / a;
+  const xlHrsPerAdv  = cliPerAdv * eh;
+  const jvHrsPerAdv  = cliPerAdv * jh;
+  const freedPerAdv  = xlHrsPerAdv - jvHrsPerAdv;
+
+  // New clients each advisor can absorb with freed time
+  const addPerAdv   = Math.floor(freedPerAdv / jh);
+  const addTotal    = addPerAdv * a;
+  const jvCliTotal  = c + addTotal;
+
+  const xlRev = c         * r * 12;
+  const jvRev = jvCliTotal * r * 12;
+  const gap   = jvRev - xlRev;
+
+  const pct = v => Math.round((v / xlHrsPerAdv) * 100) + '%';
+
+  // Big tiles
+  document.getElementById('rev-gap').textContent = fmt(gap);
+  document.getElementById('gap-sub').textContent =
+    `${addTotal} additional client${addTotal!==1?'s':''} × AU$${r.toLocaleString()} × 12 months`;
+
+  document.getElementById('hrs-freed').textContent = fmtHrs(freedPerAdv);
+  document.getElementById('hrs-sub').textContent   =
+    `per advisor — capacity for ${addPerAdv} more client${addPerAdv!==1?'s':''} each`;
+
+  // Compare
+  document.getElementById('xl-rev').textContent = fmt(xlRev);
+  document.getElementById('xl-sub').textContent = `${c} clients · ${Math.round(xlHrsPerAdv)} hrs/advisor/month`;
+  document.getElementById('jv-rev').textContent = fmt(jvRev);
+  document.getElementById('jv-sub').textContent = `${jvCliTotal} clients · ${Math.round(jvHrsPerAdv)} hrs/advisor/month`;
+
+  // Bars
+  document.getElementById('bar-xl').style.width = '100%';
+  document.getElementById('bar-jv').style.width = pct(jvHrsPerAdv);
+  document.getElementById('bar-fr').style.width = pct(freedPerAdv);
+  document.getElementById('bv-xl').textContent  = fmtHrs(xlHrsPerAdv);
+  document.getElementById('bv-jv').textContent  = fmtHrs(jvHrsPerAdv);
+  document.getElementById('bv-fr').textContent  = fmtHrs(freedPerAdv);
+  document.getElementById('bar-note').textContent =
+    `${eh} hrs per client in Excel → ${jh} hrs with Jirav · ${Math.round(freedPerAdv/8)} billable days freed per advisor per month`;
+
+  // Explainer
+  document.getElementById('calc-explainer').innerHTML =
+    `<strong>Hours freed:</strong> You currently spend ${eh} hrs per client per month in Excel. ` +
+    `Jirav reduces this to ${jh} hrs — an 80% reduction (conservative vs. Oliver Wyman's documented 93%). ` +
+    `With ${c} client${c!==1?'s':''} across ${a} advisor${a!==1?'s':''}, that frees ` +
+    `<strong>${Math.round(freedPerAdv)} hrs per advisor per month.</strong><br><br>` +
+    `<strong>New client capacity:</strong> Each new client requires ${jh} hrs/month with Jirav. ` +
+    `Dividing freed hours by that gives each advisor capacity for <strong>${addPerAdv} more client${addPerAdv!==1?'s':''}</strong> — ` +
+    `no new headcount needed. Across ${a} advisor${a!==1?'s':''} that is <strong>${addTotal} additional client${addTotal!==1?'s':''}.</strong><br><br>` +
+    `<strong>Revenue opportunity:</strong> ${addTotal} new client${addTotal!==1?'s':''} × ` +
+    `AU$${r.toLocaleString()} × 12 months = <strong>${fmt(gap)} additional ARR.</strong> ` +
+    `This is potential — it assumes you fill that capacity at your current retainer rate.`;
 }
+
 calc();
 </script>
 </body>
