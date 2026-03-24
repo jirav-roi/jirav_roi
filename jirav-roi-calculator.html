@@ -379,7 +379,7 @@ input[type=range]::-moz-range-thumb{
         </label>
         <div class="input-wrap">
           <span class="pfx">$</span>
-          <input type="number" id="retainer" value="3000" min="500" max="25000" step="500" oninput="calc()">
+          <input type="number" id="retainer" value="2000" min="500" max="25000" step="500" oninput="calc()">
         </div>
       </div>
 
@@ -388,7 +388,7 @@ input[type=range]::-moz-range-thumb{
           <span>Your current paying clients</span>
         </label>
         <div class="input-wrap no-pfx">
-          <input type="number" id="clients" value="10" min="1" max="500" oninput="calc()">
+          <input type="number" id="clients" value="5" min="1" max="500" oninput="calc()">
         </div>
       </div>
 
@@ -408,9 +408,9 @@ input[type=range]::-moz-range-thumb{
         <div class="slider-lbl">Excel hours per client per month
           <span>Time on model build, updates &amp; reporting — per client</span>
         </div>
-        <div class="slider-num" id="eh-val">12</div>
+        <div class="slider-num" id="eh-val">8</div>
       </div>
-      <input type="range" id="ehrs" min="4" max="40" value="12"
+      <input type="range" id="ehrs" min="4" max="40" value="8"
         oninput="document.getElementById('eh-val').textContent=this.value;updateSlider(this);calc()">
     </div>
   </div>
@@ -508,7 +508,7 @@ input[type=range]::-moz-range-thumb{
   <div class="cta">
     <h3>Ready to close the gap?</h3>
     <p>15 minutes. No slides. See exactly how Jirav fits your firm.</p>
-    <a class="cta-btn" href="https://meetings-ap1.hubspot.com/rees-rees" target="_blank">Book a conversation →</a>
+    <a class="cta-btn" href="https://meetings-ap1.hubspot.com/rees-rees" target="_blank">Calculate my gap →</a>
   </div>
 
   <div class="footer">
@@ -533,10 +533,10 @@ function fmt(n){
 function fmtHrs(n){ return Math.round(n)+' hrs' }
 
 function calc(){
-  const r  = Math.max(500, +document.getElementById('retainer').value || 3000);
-  const c  = Math.max(1,   +document.getElementById('clients').value  || 10);
+  const r  = Math.max(500, +document.getElementById('retainer').value || 2000);
+  const c  = Math.max(1,   +document.getElementById('clients').value  || 5);
   const a  = Math.max(1,   +document.getElementById('advisors').value || 1);
-  const eh = Math.max(4,   +document.getElementById('ehrs').value     || 12);
+  const eh = Math.max(4,   +document.getElementById('ehrs').value     || 8);
 
   // 80% reduction — conservative vs Oliver Wyman's 93%
   const jh = Math.max(1, Math.round(eh * 0.20));
@@ -552,7 +552,7 @@ function calc(){
   const addTotal    = addPerAdv * a;
   const jvCliTotal  = c + addTotal;
 
-  const xlRev = c         * r * 12;
+  const xlRev = c          * r * 12;
   const jvRev = jvCliTotal * r * 12;
   const gap   = jvRev - xlRev;
 
